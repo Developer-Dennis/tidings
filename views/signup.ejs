@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+
+    <form action="/signup" method="POST">
+        <h1>Sign Up</h1>  
+
+
+<%  if(error) { %>
+        <label for="email">Email:</label>
+            <input  name="email"  type="email" id=""   value="<%= email %>">
+        <Label for="fullname">Fullname: </label>
+            <input  name="fullname"  type="fullname" id="" value="<%= fullname %>">
+        <Label for="gender">Gender: </label>
+                <input  name="gender"  type="gender" id="" value="<%= gender %>">
+        <label for="password">Password: </label>
+            <input  name="password"  type="password" id=""value="<%= password %>">
+        <label for="confirmPassword">Confirm Password: </label>
+        <input  name="confirmpassword"  type="password" id=""value="<%= confirmpassword %>">
+<% } else { %>
+        <label for="email">Email:</label>
+            <input  name="email"  type="email" id="" ><br> <br>
+        <Label for="fullname">Fullname: </label>
+            <input  name="fullname"  type="fullname" id=""><br> <br>
+        <Label for="gender">Gender: </label>
+                <input  name="gender"  type="gender" id="" ><br> <br>
+        <label for="password">Password: </label>
+            <input  name="password"  type="password" id="" ><br> <br>
+        <label for="confirmPassword">Confirm Password: </label>
+        <input  name="confirmpassword"  type="password" id=""><br>
+<% } %>
+
+
+<input type="submit" value="submit"> 
+</form>
+<%- include('partials/footer') %>
