@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+
+
+<main class="container">
+    <%- include('partials/nav') %>
+    <p>Welcome, <%= locals.username %></p>
+
+    <% for(let tyd of tyds)  { %>
+
+        <% let username = tyd.fullname.split(' ')[0].toLowerCase() %>
+
+        <div class="tyd">
+            <h3>@<%= username %></h3>
+            <p><%= tyd.tyd %></p>
+            <small><%= tyd.dateposted %></small>
+        </div>
+
+    <% } %>
+
+
+</main>
+
+
+
+<%- include('partials/footer') %>
