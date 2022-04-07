@@ -16,6 +16,30 @@ const connection = mysql.createConnection({
     password: '',
     database: 'tidings'
 });
+
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    // cookie: { secure: true }
+  }))
+  app.use((req, res, next) => {
+    if(req.session.userId === undefined){
+        res.locals.isLoggedIn = false;
+        
+    } else {
+        res.locals.isLoggedIn = true;
+        res.locals.fullname = req.session.fullname;
+    }
+    next();
+})
+
+
+
+
+
+
 connection.query(
     'SELECT * FROM users',(error,results) => {
         if(error) console.log(error)
@@ -93,8 +117,10 @@ app.post('/login',(req,res)=>{
             if(results.length>0){
                 bcrypt.compare(password,results[0].password, (error,isEqual)=>{
                     if(isEqual){
-                        
-                        res.render('about-us.ejs')
+                        req.session.userId = results[0].id;
+                       req.session.fullname = results[0].fullname;
+                        res.render('new-tyd.ejs')
+
 
                     }else{
                       console.log('mmn')
@@ -111,8 +137,28 @@ app.post('/login',(req,res)=>{
 })
 
 
+app.get('/tyd',(req, res) => {
+    if (res.locals.isLoggedIn)
+    connection.query(
+        'SELECT * FROM tyds WHERE userID =?',[req.session.userID],(error,results)=>{
+            res.render('new-tyd.ejs')
+        }
+    )
+    
+})
 
 
+app.post('/tyd',(req,res) => {
+    connection.query(
+        'INSERT INTO tyds (tyd, userID) VALUES (?,12)',
+         [req.body.tyd],
+         (error, results) => {
+             console.log(error)
+             res.render('about-us.ejs');
+         }
+    );
+ });
+ 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
     console.log(`Server up on PORT ${PORT}`);
