@@ -55,3 +55,64 @@ background-size:cover;
 #home #home-text{
     margin-top: 180px;
 }
+
+.access-point, #new-tyd{
+    height: 100vh;
+}
+
+.access-point form{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 0 auto;
+    border: 1px solid #d8d7d7;
+    margin-top: 40px;
+    border-radius: 10px;
+}
+.access-point form h2{
+    text-align: center;
+    color:#1383a8;
+}
+.access-point form label{
+    margin-bottom: 5px;
+}
+.access-point form input, .access-point form select{
+    font-size: 19px;
+    margin-bottom: 5px;
+}
+.access-point form input[type='submit']{
+    background-color: #1383a8;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #1383a8;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#new-tyd form{
+    margin: 40px auto 0;
+    padding: 20px;
+    border: 1px solid #d8d7d7;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+#new-tyd form label{
+    font-size: 19px;
+    color: #1383a8;
+    margin-bottom: 8px;
+}
+#new-tyd input[type='submit']{
+    font-size: 19px;
+    background-color: #1383a8;
+    color: #fff;
+    border: 1px solid #1383a8;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100px;
+    align-self: center;
+    margin-top: 10px;
+}
