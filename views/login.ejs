@@ -1,16 +1,25 @@
 <%- include('partials/header') %>
-<%- include('partials/nav') %>
+
+    <main>
+
+        <%- include('partials/nav') %>
+
+        <form action="/login" method="post">
+            <h2>Log In</h2>
+
+            <% if(error) { %>
+                <p style="color: red"><%= message %></p>
+            <% } %> 
+
+            <label for="">Email</label>
+            <input type="email" name="email" id="" value="<%= user.email %>" required>
+            <label for="">Password</label>
+            <input type="password" name="password" id="" value="<%= user.password %>" required>
+            <input type="submit" value="Log In">
+            <p>Don't have an account? <a href="/signup">Create One</a></p>
+        </form>
 
 
-<form action="/login" method="POST">
-    <h1> Log In</h1>
-    <label for="email">Email:</label>
-        <input  name="email"  type="email" id="" >  <br> <br>
-    <label for="password">Password: </label>
-        <input  name="password"  type="password" id="" ><br><br>
-        <input type="submit" value="submit">
-</form>
-
-
+    </main>
 
 <%- include('partials/footer') %>
