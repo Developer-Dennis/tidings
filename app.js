@@ -16,6 +16,21 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(express.urlencoded({extended: false}))
 
+app.use(session({
+    secret: 'elections',
+    resave: 'false',
+    saveUninitialized: 'false'
+}))
+
+app.use((req,res,next) => {
+    if(req.session.userId === undefined){
+        res.locals.isLoggedIn = false
+    } else {
+        res.locals.isLoggedIn = true
+        res.locals.username = req.session.username
+    }
+    next()
+})
 
 app.get('/', (req, res) => {
     res.render('home.ejs')
@@ -27,13 +42,36 @@ app.get('/about', (req, res) => {
 
 
 app.get('/new-tyd', (req, res) => {
-    res.render('new-tyd.ejs')
+    if(res.locals.isLoggedIn){
+        res.render('new-tyd.ejs')
+    }else {
+        res.redirect('/login')
+    }
 })
 
 app.post('/new-tyd', (req, res)=> {
-    
+    connection.query(
+        'INSERT INTO tyds (tyd, userID) VALUES (?,?)',
+        [req.body.tyd,req.session.userId],
+        (error,results) => {
+            res.redirect('/tyds')
+        }
+    )
 })
 
+
+app.get('/tyds',(req,res) => {
+    if(res.locals.isLoggedIn){
+        connection.query(
+            'SELECT * FROM  tyds JOIN users ON tyds.userID = users.id',
+            (error, results) => {
+                res.render('tyds.ejs',{tyds: results})
+            }
+        )
+        
+    }else 
+        res.redirect('/login')
+})
 
 app.get('/login', (req, res) => {
     let user = {
@@ -55,7 +93,10 @@ app.post('/login', (req, res) => {
             if (results.length > 0) {
                 bcrypt.compare(user.password, results[0].password, (error, isEqual) => {
                     if(isEqual) {
-                        res.redirect('/')
+                        req.session.userId = results[0].id
+                        req.session.username = results[0].fullname.split(' ')[0].toLowerCase()
+                        // console.log(req.session)
+                        res.redirect('/tyds')
                     } else {
                         let message = 'Email/Password mistmatch.'
                         res.render('login.ejs', {error: true, message: message, user: user})
@@ -72,6 +113,12 @@ app.post('/login', (req, res) => {
 
 })
 
+
+app.get('/logout', (req,res) => {
+    req.session.destroy((error) => {
+        res.redirect('/')
+    })
+})
 app.get('/signup', (req, res) => {
     let user = {
         email: '',
@@ -124,3 +171,8 @@ const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
     console.log(`Server up on PORT ${PORT}`)
 })
+
+
+
+
+
