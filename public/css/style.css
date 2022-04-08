@@ -118,4 +118,28 @@ background-size:cover;
 }
 .tyd{
     border-bottom: 1px solid #1383a8;
+    width: 50%;
+    margin: 0 auto 5px;
+}
+.tyd div{
+    display: flex;
+    margin-bottom: 4px;
+    justify-content: space-between;
+
+}
+.tyd #upper img{
+width: 100px;
+height: 100px;
+}
+
+.tyd #upper div{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+.tyd #upper p{
+    text-align: justify;
+}
+.tyd .likes{
+    margin-left: 5px;
 }
