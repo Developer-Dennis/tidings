@@ -27,6 +27,7 @@ app.use((req,res,next) => {
         res.locals.isLoggedIn = false
     } else {
         res.locals.isLoggedIn = true
+        res.locals.userId = req.session.userId
         res.locals.username = req.session.username
     }
     next()
@@ -63,15 +64,89 @@ app.post('/new-tyd', (req, res)=> {
 app.get('/tyds',(req,res) => {
     if(res.locals.isLoggedIn){
         connection.query(
-            'SELECT * FROM  tyds JOIN users ON tyds.userID = users.id',
-            (error, results) => {
-                res.render('tyds.ejs',{tyds: results})
+            'SELECT tyds.id as tydId, tyd,dateposted,fullname, likes,users.id as userId FROM  tyds JOIN users ON tyds.userID = users.id',
+            (error, tyds) => {
+                if(error) {
+                    console.log(error)
+                }else {
+                    connection.query(
+                        'SELECT * FROM likes WHERE userId = ?',
+                        [req.session.userId],
+                        (error, likes) =>{
+                            
+                            res.render('tyds.ejs',{tyds: tyds, likes:likes})
+                            
+                        }
+                    )
+                }
+               
             }
         )
         
     }else 
         res.redirect('/login')
 })
+
+
+app.post('/updatelikes', (req,res) => {
+    let userId = parseInt(req.query.userId)
+    let tydId = parseInt(req.query.tydId)
+    
+    console.log(req.query)
+    connection.query(
+        "SELECT * FROM likes WHERE tydid = ? AND userId = ?",
+        [tydId, userId],
+        (error, likes) => {
+            if(error){
+            
+            } else{
+                if(likes.length>0){
+                    connection.query(
+                        "DELETE FROM likes WHERE tydid = ? AND userId = ?",
+                        [tydId, userId],
+                        (error, results) =>{
+                            connection.query(
+                             'UPDATE tyds SET likes = likes-1 WHERE id = ?',
+                             [tydId],
+                             (error, results) => {
+                                 if(error) {
+                                
+                                }else{
+                                    res.redirect('/tyds')
+                                }
+                            })
+                        }
+                           
+                    )
+                    
+                    // remove from db
+                } else{
+                    connection.query(
+                        "INSERT INTO likes(tydid, userId) VALUES(?,?)",
+                        [tydId, userId],
+                        (error, results) => {
+                            if(error){
+                                
+                            } else{
+                                connection.query(
+                                    'UPDATE tyds SET likes = likes+1 WHERE id = ?',
+                                    [tydId],
+                                    (error, results) => {
+                                        if(error) {
+                                       
+                                       }else{
+                                           res.redirect('/tyds')
+                                       }
+                                   })
+                            }
+                        }
+                    )
+                }
+            }                
+        }
+    ) 
+})
+
 
 app.get('/login', (req, res) => {
     let user = {
