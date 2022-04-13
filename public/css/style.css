@@ -39,6 +39,7 @@ header .nav-link a{
 height: 100vh;
 background-image: url('/images/home.jpg');
 background-size:cover;
+opacity: 1;
 }
 
 #home div {
