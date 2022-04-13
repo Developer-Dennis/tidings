@@ -5,7 +5,7 @@
     <%- include('partials/nav') %>
    <div class="container">
         <p>Welcome, <%= locals.username %></p>
-
+            <% tyds.reverse()%>
         <% for(let tyd of tyds)  { %>
 
             <% let username = tyd.fullname.split(' ')[0].toLowerCase() %>
@@ -16,21 +16,32 @@
                     <div>
                         <h3>@<%= username %></h3>
                         <p><%= tyd.tyd %></p>
+                        <p><%= tyd.id %></p>
                     </div>
                 </div>
                 <div id="lower">
                     <p><%= tyd.dateposted.toString().split(' ').slice(0,5).join(' ') %></p>
+                   
                     <div>
-                        <img src="/images/icons/heart.svg"alt="">
-                        <span class="likes"><%= avatar + 15 %></span>
+                        <form action="/updatelikes?tydId=<%=tyd.tydId%>&userId=<%=locals.userId%>" method="POST">
+                            <button type="submit">
+                                <% if(likes.some(like=>like.tydid===tyd.tydId)) { %>
+                                    <img id="like" src="/images/icons/heart-fill.svg"alt="">
+                                <% } else { %>
+                                    <img id="like" src="/images/icons/heart.svg"alt="">
+                                <% } %>
+                            </button>
+                        </form>
+                        <% if(tyd.likes > 0) { %>
+                            <span id="likes"><%= tyd.likes %></span>
+                        <% } %>
                     </div>
                 </div>
+                
             </div>
 
         <% } %>
    </div>
-
-
 </main>
 
 
