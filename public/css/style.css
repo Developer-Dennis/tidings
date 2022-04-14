@@ -117,30 +117,47 @@ opacity: 1;
     align-self: center;
     margin-top: 10px;
 }
-.tyd{
+.tyd, .like, #tab{
     border-bottom: 1px solid #1383a8;
     width: 50%;
     margin: 0 auto 5px;
 }
-.tyd div{
+#tab{
+    border: 0;
+}
+#tab, .tab{
+    font-size: 17px;
+    margin-bottom: 8px;
+    padding: 0 8px;
+    border: 0;
+    color: #1383a8;
+    background-color: #fff;
+}
+#tab #tyd-tab{
+    border-bottom: 1px solid #1383a8;
+}
+.like{
+    display: none;
+}
+.tyd div, .like div{
     display: flex;
     margin-bottom: 4px;
     justify-content: space-between;
 
 }
-.tyd #upper img{
+.tyd #upper img, .like #upper img{
 width: 100px;
 height: 100px;
 }
 
-.tyd #upper div{
+.tyd #upper div, .like #upper div{
     display: flex;
     flex-direction: column;
     margin-left: 5px;
 }
-.tyd #upper p{
+.tyd #upper p, .like #upper p{
     text-align: justify;
 }
-.tyd .likes{
+.tyd .like{
     margin-left: 5px;
 }
