@@ -161,3 +161,11 @@ height: 100px;
 .tyd .like{
     margin-left: 5px;
 }
+#about-tyds{
+   display: flex;
+   justify-content: center;
+}
+#about-tyds img{
+    width: 75%;
+    
+}
